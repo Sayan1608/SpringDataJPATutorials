@@ -14,7 +14,7 @@
 	<name>JPATutorial</name>
 	<description>Demo project for Spring Boot for JPATutorial</description>
 	<properties>
-		<java.version>22</java.version>
+		<java.version>21</java.version>
 	</properties>
 	<dependencies>
 		<dependency>

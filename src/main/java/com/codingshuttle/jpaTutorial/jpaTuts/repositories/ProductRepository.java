@@ -1,34 +1,26 @@
 package com.codingshuttle.jpaTutorial.jpaTuts.repositories;
 
 import com.codingshuttle.jpaTutorial.jpaTuts.entities.ProductEntity;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
-@Repository
-public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
-    List<ProductEntity> findByTitle(String title, Pageable pageable);
+public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
+    List<ProductEntity> findByTitle(String title);
 
-    List<ProductEntity> findByCreatedAtAfterOrderByTitle(LocalDateTime after);
+    List<ProductEntity> findByTitleContainingIgnoreCase(String title);
 
-    List<ProductEntity> findByQuantityGreaterThanOrPriceLessThan(int quantity, BigDecimal price);
+    List<ProductEntity> findByQuantityGreaterThanAndPriceBetween(Integer quantity, BigDecimal startingPrice, BigDecimal endingPrice);
 
-    List<ProductEntity> findByTitleLike(String title);
+    @Query("Select e from ProductEntity e where e.createdAt between ?1 and ?2")
+    List<ProductEntity> findByCreatedAtDate(LocalDateTime startTime, LocalDateTime endTime);
 
-    List<ProductEntity> findByTitleContainingIgnoreCase(String title,  Pageable pageable);
+    // sorting functionality
+    List<ProductEntity> findByOrderByPrice();
 
-//    Optional<ProductEntity> findByTitleAndPrice(String title, BigDecimal price);
-
-    @Query("select e.title, e.price from ProductEntity e where e.title=:title and e.price=:price")
-    Optional<ProductEntity> findByTitleAndPrice(String title, BigDecimal price);
-
-
+    List<ProductEntity> findBy(Sort sort);
 }
