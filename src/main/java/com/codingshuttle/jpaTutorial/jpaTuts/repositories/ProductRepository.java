@@ -1,5 +1,7 @@
 package com.codingshuttle.jpaTutorial.jpaTuts.repositories;
 
+import com.codingshuttle.jpaTutorial.jpaTuts.dto.CProductInfo;
+import com.codingshuttle.jpaTutorial.jpaTuts.dto.IProductInfo;
 import com.codingshuttle.jpaTutorial.jpaTuts.entities.ProductEntity;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,4 +25,10 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
     List<ProductEntity> findByOrderByPrice();
 
     List<ProductEntity> findBy(Sort sort);
+
+    @Query("select p.sku as sku, p.title as title, p.price as price from ProductEntity p")
+    List<IProductInfo> getAllProductInfo();
+
+    @Query("select new com.codingshuttle.jpaTutorial.jpaTuts.dto.CProductInfo(p.sku, p.title, p.price) from ProductEntity p")
+    List<CProductInfo> getAllProductInfoConcrete();
 }
